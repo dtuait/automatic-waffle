@@ -1,0 +1,19 @@
+{
+    "name": "Laravel DevContainer",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "laravel",
+    "workspaceFolder": "/workspace",
+    "remoteUser": "root",
+    "forwardPorts": [8000, 5173],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "felixfbecker.php-intellisense",
+                "bmewburn.vscode-intelephense-client",
+                "onecentlin.laravel-blade",
+                "onecentlin.laravel5-snippets"
+            ]
+        }
+    },
+    "postStartCommand": "bash .devcontainer/postStartCommand.sh"
+}
