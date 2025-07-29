@@ -22,6 +22,31 @@ try {
     // Try to generate the SSO URL
     $ssoUrl = $auth->login(null, [], false, false, true);
     echo "✓ SSO URL generated: " . $ssoUrl . "\n";
+
+    // Optionally fetch the IdP page to detect obvious error messages
+    echo "Checking IdP response...\n";
+
+    $caBundle = __DIR__ . '/sts_ait_dtu_ca.pem';
+    $context = stream_context_create([
+        'http' => ['method' => 'GET'],
+        'ssl'  => [
+            'verify_peer'       => true,
+            'verify_peer_name'  => true,
+            'cafile'            => file_exists($caBundle) ? $caBundle : null,
+        ],
+    ]);
+
+    $html = @file_get_contents($ssoUrl, false, $context);
+    if ($html === false) {
+        $error = error_get_last();
+        echo "✗ Failed to fetch SSO URL: " . ($error['message'] ?? 'unknown error') . "\n";
+    } else {
+        if (stripos($html, 'An error occurred') !== false) {
+            echo "✗ IdP returned an error page\n";
+        } else {
+            echo "✓ IdP page loaded successfully\n";
+        }
+    }
     
 } catch (Exception $e) {
     echo "✗ Error: " . $e->getMessage() . "\n";
