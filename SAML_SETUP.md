@@ -12,10 +12,10 @@ SP_CERT=/path/to/your_sp_cert.pem
 SP_KEY=/path/to/your_sp_key.pem
 
 # Identity Provider (ADFS example)
-IDP_ENTITY_ID=https://sts.ait.dtu.dk/adfs/services/trust
-IDP_SSO_URL=https://sts.ait.dtu.dk/adfs/ls/
-IDP_SLO_URL=https://sts.ait.dtu.dk/adfs/ls/?wa=wsignout1.0
-IDP_CERT=/path/to/dtu_adfs_cert.pem
+IDP_ENTITY_ID=https://idp.example.com/adfs/services/trust
+IDP_SSO_URL=https://idp.example.com/adfs/ls/
+IDP_SLO_URL=https://idp.example.com/adfs/ls/?wa=wsignout1.0
+IDP_CERT=/path/to/idp_cert.pem
 
 # Optional security options
 WANT_ASSERTIONS_SIGNED=true
