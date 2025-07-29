@@ -1,16 +1,22 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
+ob_start();
+error_reporting(E_ALL & ~E_DEPRECATED);
+ini_set('display_errors', '0');
+
+// Collect messages without printing them until phpCAS has initialized
+$output = '';
 
 // Load environment variables
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 } else {
-    echo "Warning: .env file not found. Copy .env.example to .env and update the CAS variables.\n";
+    $output .= "Warning: .env file not found. Copy .env.example to .env and update the CAS variables.\n";
 }
 
-
-echo "Testing CAS Authentication...\n";
+// Append initial status text
+$output .= "Testing CAS Authentication...\n";
 
 try {
     $host = $_ENV['CAS_HOST'] ?? getenv('CAS_HOST') ?: 'cas.example.com';
@@ -29,6 +35,10 @@ try {
         phpCAS::setNoCasServerValidation();
     }
 
+    ob_end_clean();
+    // Now that phpCAS is initialized, print any queued output
+    echo $output;
+
     echo "✓ Client configured\n";
     $loginUrl = "https://{$host}";
     if ((int)$port !== 443) {
@@ -39,4 +49,5 @@ try {
 } catch (Exception $e) {
     echo "✗ Error: " . $e->getMessage() . "\n";
 }
+ob_end_flush();
 
