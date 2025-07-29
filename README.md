@@ -24,3 +24,11 @@ See `.devcontainer/DEVELOPMENT_GUIDE.md` for basic usage.
    ```
 4. Open `http://localhost:8000` in your browser. After CAS authentication you
    should see a greeting with your username.
+
+## SAML Setup
+
+If your identity provider offers SAML 2.0 (for example ADFS), download its
+`federationmetadata.xml` file (commonly found under a
+`/federationmetadata/2007-06/` path) and extract the certificate and
+endpoints. The file `SAML_SETUP.md` contains example environment variables and
+explains how to obtain values from the metadata.
