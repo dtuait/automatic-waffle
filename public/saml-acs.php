@@ -13,7 +13,10 @@ if (file_exists(__DIR__ . '/../.env')) {
 session_start();
 
 try {
-    $settings = require __DIR__ . '/settings.php';
+    // Load SAML settings from the shared configuration file
+    // The file resides in the project "saml" directory one level up
+    // from the public document root.
+    $settings = require __DIR__ . '/../saml/settings.php';
     $auth = new Auth($settings);
     
     // Process SAML Response
