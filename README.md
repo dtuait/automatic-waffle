@@ -18,11 +18,17 @@ See `.devcontainer/DEVELOPMENT_GUIDE.md` for basic usage.
    ```bash
    composer install
    ```
-3. Start the built-in PHP server:
+3. (Optional) Verify your configuration by running the test script:
+   ```bash
+   php test-cas.php
+   ```
+   The script prints the CAS login URL if everything is configured correctly. It
+   will warn if `.env` is missing or CAS variables are not set.
+4. Start the built-in PHP server:
    ```bash
    php -S 0.0.0.0:8000 -t public
    ```
-4. Open `http://localhost:8000` in your browser. After CAS authentication you
+5. Open `http://localhost:8000` in your browser. After CAS authentication you
    should see a greeting with your username.
 
 ## SAML Setup
