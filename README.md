@@ -22,7 +22,7 @@ See `.devcontainer/DEVELOPMENT_GUIDE.md` for basic usage.
    ```bash
    php test-cas.php
    ```
-   The script prints the CAS login URL if everything is configured correctly. It
+The script prints the CAS login URL if everything is configured correctly. It
    will warn if `.env` is missing or CAS variables are not set.
 
 4. Start the built-in PHP server:
@@ -39,3 +39,14 @@ If your identity provider offers SAML 2.0 (for example ADFS), download its
 `/federationmetadata/2007-06/` path) and extract the certificate and
 endpoints. The file `SAML_SETUP.md` contains example environment variables and
 explains how to obtain values from the metadata.
+
+## DTU Example Configuration
+
+The repository includes defaults for DTU's Single Sign-On setup. Copy `.env.example` to `.env`
+and the values will point to:
+
+- **CAS**: `sso.dtu.dk`
+- **SAML/ADFS**: `sts.ait.dtu.dk`
+
+With these settings the included `test-cas.php` and `test-saml.php` scripts
+should print DTU login URLs when executed.
