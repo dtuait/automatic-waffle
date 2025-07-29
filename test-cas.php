@@ -1,10 +1,9 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
-ob_start();
 error_reporting(E_ALL & ~E_DEPRECATED);
-ini_set('display_errors', '0');
+require __DIR__ . '/vendor/autoload.php';
+ini_set('display_errors', '1');
 
-// Collect messages without printing them until phpCAS has initialized
+// Text to print during the test
 $output = '';
 
 // Load environment variables
@@ -35,8 +34,6 @@ try {
         phpCAS::setNoCasServerValidation();
     }
 
-    ob_end_clean();
-    // Now that phpCAS is initialized, print any queued output
     echo $output;
 
     echo "✓ Client configured\n";
@@ -46,8 +43,31 @@ try {
     }
     $loginUrl .= rtrim($context, '/') . '/login?service=' . urlencode($baseUrl);
     echo "✓ Login URL: " . $loginUrl . "\n";
+
+    echo "Checking CAS server response...\n";
+
+    $caOptions = [];
+    if ($caCert && file_exists($caCert)) {
+        $caOptions['cafile'] = $caCert;
+    }
+    $contextOptions = [
+        'http' => ['method' => 'GET'],
+        'ssl'  => array_merge(['verify_peer' => (bool)$caCert,
+                               'verify_peer_name' => (bool)$caCert], $caOptions),
+    ];
+    $ctx = stream_context_create($contextOptions);
+    $html = @file_get_contents($loginUrl, false, $ctx);
+    if ($html === false) {
+        $err = error_get_last();
+        echo "✗ Failed to fetch CAS login page: " . ($err['message'] ?? 'unknown error') . "\n";
+    } else {
+        if (stripos($html, 'CAS') === false && stripos($html, '<html') === false) {
+            echo "✗ Unexpected response from CAS server\n";
+        } else {
+            echo "✓ CAS login page loaded successfully\n";
+        }
+    }
 } catch (Exception $e) {
     echo "✗ Error: " . $e->getMessage() . "\n";
 }
-ob_end_flush();
 
