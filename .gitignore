@@ -6,3 +6,6 @@ package-lock.json
 composer.lock
 composer.lock
 federationmetadata.xml
+storage/saml/sp_cert.pem
+.gitignore
+storage/saml/sp_key.pem
