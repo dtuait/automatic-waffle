@@ -50,3 +50,8 @@ and the values will point to:
 
 With these settings the included `test-cas.php` and `test-saml.php` scripts
 should print DTU login URLs when executed.
+
+If the scripts report that the server cannot be reached, your environment may
+block outbound connections to the DTU authentication servers. The test scripts
+now attempt to fetch the login pages and will display a clear error when a
+network issue occurs.
