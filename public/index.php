@@ -58,24 +58,27 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                 exit;
                 
             } catch (Exception $e) {
-                $error = "SAML Error: " . $e->getMessage();
+                $error = "SAML Error: " . $e->getMessage() . "<br>File: " . $e->getFile() . "<br>Line: " . $e->getLine();
+                // Don't redirect, show the error on the login page
             }
         }
         
-        // Redirect to remove login parameters
-        header('Location: /');
-        exit;
+        // Only redirect if there was no error
+        if (!isset($error)) {
+            header('Location: /');
+            exit;
+        }
     }
     
     // Show login page
-    showLoginPage();
+    showLoginPage($error ?? null);
     exit;
 }
 
 // User is authenticated, show the hello world page
 showWelcomePage();
 
-function showLoginPage() {
+function showLoginPage($error = null) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
