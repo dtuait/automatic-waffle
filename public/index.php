@@ -39,13 +39,17 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             } else {
                 phpCAS::setNoCasServerValidation();
             }
-            
-            phpCAS::forceAuthentication();
-            
-            $_SESSION['authenticated'] = true;
-            $_SESSION['username'] = phpCAS::getUser();
-            $_SESSION['auth_method'] = 'CAS';
-            $_SESSION['login_time'] = date('Y-m-d H:i:s');
+
+            try {
+                phpCAS::forceAuthentication();
+
+                $_SESSION['authenticated'] = true;
+                $_SESSION['username'] = phpCAS::getUser();
+                $_SESSION['auth_method'] = 'CAS';
+                $_SESSION['login_time'] = date('Y-m-d H:i:s');
+            } catch (CAS_AuthenticationException $e) {
+                $error = 'CAS Error: ' . $e->getMessage();
+            }
             
         } elseif ($authMethod === 'saml') {
             // SAML Authentication
