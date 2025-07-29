@@ -22,7 +22,9 @@ See `.devcontainer/DEVELOPMENT_GUIDE.md` for basic usage.
    ```bash
    php test-cas.php
    ```
-   The script prints the CAS login URL if everything is configured correctly.
+   The script prints the CAS login URL if everything is configured correctly. It
+   will warn if `.env` is missing or CAS variables are not set.
+
 4. Start the built-in PHP server:
    ```bash
    php -S 0.0.0.0:8000 -t public

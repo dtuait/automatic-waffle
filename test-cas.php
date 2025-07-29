@@ -5,6 +5,8 @@ require __DIR__ . '/vendor/autoload.php';
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
+} else {
+    echo "Warning: .env file not found. Copy .env.example to .env and update the CAS variables.\n";
 }
 
 
@@ -13,7 +15,7 @@ echo "Testing CAS Authentication...\n";
 try {
     $host = $_ENV['CAS_HOST'] ?? getenv('CAS_HOST');
     if (!$host) {
-        throw new Exception('CAS_HOST not configured');
+        throw new Exception('CAS_HOST not configured. Did you copy .env.example to .env?');
     }
     $port = $_ENV['CAS_PORT'] ?? getenv('CAS_PORT') ?: 443;
     $context = $_ENV['CAS_CONTEXT'] ?? getenv('CAS_CONTEXT') ?: '/cas';
